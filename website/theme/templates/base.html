@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="{{ DEFAULT_LANG }}">
+<head>
+{% assets filters="cssmin", output="style/base.min.css", "style/bebas.css", "style/ptsans.css", "style/social.css", "style/toc.css", "style/content.css", "style/donate.css", "style/menu.css" %}
+        <link rel="stylesheet" href="{{ SITEURL }}/{{ ASSET_URL }}">
+{% endassets %}
+        {% block head %}
+        <title>{% block title %}{{ SITENAME }}{% endblock title %}</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        {% if FEED_ALL_ATOM %}
+        <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Full Atom Feed" />
+        {% endif %}
+        {% if FEED_ALL_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_RSS }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Full RSS Feed" />
+        {% endif %}
+        {% if FEED_ATOM %}
+        <link href="{{ FEED_DOMAIN }}/{{ FEED_ATOM }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Atom Feed" />
+        {% endif %}
+        {% if FEED_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{{ FEED_RSS }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} RSS Feed" />
+        {% endif %}
+        {% if CATEGORY_FEED_ATOM and category %}
+        <link href="{{ FEED_DOMAIN }}/{{ CATEGORY_FEED_ATOM|format(category.slug) }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Categories Atom Feed" />
+        {% endif %}
+        {% if CATEGORY_FEED_RSS and category %}
+        <link href="{{ FEED_DOMAIN }}/{{ CATEGORY_FEED_RSS|format(category.slug) }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Categories RSS Feed" />
+        {% endif %}
+        {% if TAG_FEED_ATOM and tag %}
+        <link href="{{ FEED_DOMAIN }}/{{ TAG_FEED_ATOM|format(tag.slug) }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Tags Atom Feed" />
+        {% endif %}
+        {% if TAG_FEED_RSS and tag %}
+        <link href="{{ FEED_DOMAIN }}/{{ TAG_FEED_RSS|format(tag.slug) }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Tags RSS Feed" />
+        {% endif %}
+	{% if extra_siteurls %}
+	<link rel="alternate" hreflang="{{ DEFAULT_LANG }}" href="{{ SITEURL }}/{{ output_file }}" />
+		{% for lang,url in extra_siteurls.items() %}
+				{% if url %}
+	<link rel="alternate" hreflang="{{ lang }}" href="{{ url }}/{{ output_file }}" />
+				{% else %}
+	<link rel="alternate" hreflang="{{ lang }}" href="{{ output_file }}" />
+				{% endif %}
+		{% endfor %}
+	<link rel="alternate" hreflang="x-default" href="https://freenetproject.org/{{ output_file }}" />
+        {% endif %}
+	<link rel="canonical" href="{{ SITEURL }}/{{ output_file }}" />
+        {% endblock head %}
+
+      <meta property="og:title" content="{{ SITENAME }}" />
+      <meta property="og:type" content="article" />
+      <meta property="og:url" content="{{ SITEURL }}" />
+      <meta property="og:image" content="{{ SITEURL }}/" />
+      <meta property="og:image:secure_url" content="{{ SITEURL }}/theme/images/logo-blue.png" />
+      <meta property="og:description" content="Freenet is a peer-to-peer platform for censorship-resistant communication and publishing." />
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:title" content="{{ SITENAME }}" />
+      <meta name="twitter:description" content="Freenet is a peer-to-peer platform for censorship-resistant communication and publishing." />
+      <meta name="twitter:image" content="{{ SITEURL }}/theme/images/logo-blue.png" />
+</head>
+
+<body id="index" class="home">
+	<div>
+        <nav id="menu">
+	<a href="{{ SITEURL }}/">Freenet</a>
+        {% for title, link in MENUITEMS %}
+            <li><a href="{{ link }}">{{ title }}</a></li>
+        {% endfor %}
+        {% for p in pages %}
+          <a {% if p == page %} class="active"{% endif %} href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
+        {% endfor %}
+        </nav><!-- /#menu -->
+
+	<aside class="social">
+		<a href="https://www.facebook.com/freenetp2p">Facebook</a>
+		<a href="https://twitter.com/freenetproject">Twitter</a>
+		<a href="https://plus.google.com">Google+</a>
+	</aside>
+
+	<nav id="language">
+	{% if extra_siteurls %}
+		<span>Language</span>
+		{% for lang, url in extra_siteurls.items() %}
+			{% if url %}
+				<a href="{{ url }}/{{ output_file }}">{{ lang }}</a>
+			{% else %}
+				<a href="/{{ output_file }}">{{ lang }}</a>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+	</nav>
+
+	</div>
+	<main>
+
+        <header id="banner" class="body">
+                <h1>{% block heading %}{{ SITENAME }}{% endblock heading %}</h1>
+        </header><!-- /#banner -->
+        {% block content %}
+        {% endblock %}
+	</main>
+
+	{% include "footer.html" %}
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="{{ DEFAULT_LANG }}">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Freenet</title>
+{% assets filters="cssmin", output="style/index.min.css", "style/bebas.css", "style/ptsans.css", "style/social.css", "style/content.css", "style/landing.css", "style/menu.css" %}
+		<link rel="stylesheet" href="{{ SITEURL }}/{{ ASSET_URL }}">
+{% endassets %}
+		{% if extra_siteurls %}
+		<link rel="alternate" hreflang="{{ DEFAULT_LANG }}" href="{{ SITEURL }}/{{ output_file }}" />
+			{% for lang,url in extra_siteurls.items() %}
+				{% if url %}
+		<link rel="alternate" hreflang="{{ lang }}" href="{{ url }}/{{ output_file }}" />
+				{% else %}
+		<link rel="alternate" hreflang="{{ lang }}" href="{{ output_file }}" />
+				{% endif %}
+			{% endfor %}
+		<link rel="alternate" hreflang="x-default" href="https://freenetproject.org/{{ output_file }}" />
+		{% endif %}
+		<link rel="canonical" href="{{ SITEURL }}/{{ output_file }}" />
+	</head>
+	<body>
+	<div>
+		<aside class="social">
+			<a href="https://www.facebook.com/freenetp2p">Facebook</a>
+			<a href="https://twitter.com/freenetproject">Twitter</a>
+			<a href="https://plus.google.com">Google+</a>
+		</aside>
+		<nav id="menu">
+			<a href="{{ SITEURL }}/">Freenet</a>
+			{% for title, link in MENUITEMS %}
+			    <a href="{{ link }}">{{ title }}</a>
+			{% endfor %}
+			{% for p in pages %}
+			  <a {% if p == page %} class="active"{% endif %} href="{{ SITEURL }}/{{ p.url }}">
+				  {% trans title=p.title %}{{ title }}{% endtrans %}
+			  </a>
+			{% endfor %}
+		</nav>
+		<nav id="language">
+		{% if extra_siteurls %}
+			<span>Language</span>
+			{% for lang, url in extra_siteurls.items() %}
+				{% if url %}
+					<a href="{{ url }}/{{ output_file }}">{{ lang }}</a>
+				{% else %}
+					<a href="/{{ output_file }}">{{ lang }}</a>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+		</nav>
+		<header>
+			<h1>Freenet</h1>
+			<p>{% trans %}Freenet is a peer-to-peer platform for censorship-resistant communication and publishing.{% endtrans %}</p>
+		</header>
+		<section id="actions">
+			<a href="{{ BASE_URL }}/pages/download.html">
+				<div>
+					<h2>{% trans %}Download{% endtrans %}</h2>
+					<p>{% trans %}Install Freenet{% endtrans %}</p>
+				</div>
+			</a>
+
+			<a href="{{ BASE_URL }}/pages/documentation.html">
+				<div>
+					<h2>{% trans %}Learn{% endtrans %}</h2>
+					<p>{% trans %}Protect your privacy{% endtrans %}</p>
+				</div>
+			</a>
+			<a href="{{ BASE_URL }}/pages/donate.html">
+				<div>
+					<h2>{% trans %}Donate{% endtrans %}</h2>
+					<p>{% trans %}Support the Freenet Project{% endtrans %}</p>
+				</div>
+			</a>
+			<a href="{{ BASE_URL }}/pages/volunteer.html">
+				<div>
+					<h2>{% trans %}Contribute{% endtrans %}</h2>
+					<p>{% trans %}Protect internet privacy and freedom{% endtrans %}</p>
+				</div>
+			</a>
+		</section>
+
+		<a href="#whatsfreenet" id="more">{% trans %}More{% endtrans %}</a>
+	</div>
+	<div>
+
+	<section id="features">
+		<h2>{% trans %}Freenet Features{% endtrans %}</h2>
+		<p>{% trans %}Browse websites, post on forums, and publish files within Freenet with strong privacy protections.{% endtrans %}</p>
+
+		<ul>
+			<li>
+			  <a href="http://freesocial.draketo.de/wot_en.html">
+			    <div>
+				<h3>{% trans %}Secret Identity{% endtrans %}</h3>
+				<p>{% trans %}Create yours so nobody knows who you are{% endtrans %}</p>
+			    </div>
+			  </a>
+			</li>
+			<li>
+			  <a href="https://github.com/freenet/wiki/wiki/Using-Freenet#Participating_on_Freenet">
+			    <div>
+			      <h3>{% trans %}Browse Websites{% endtrans %}</h3>
+			      <p>{% trans %}Freenet is home to sites ranging from programming to sustainable living{% endtrans %}</p>
+			    </div>
+			  </a>
+			</li>
+			<li>
+			  <a href="https://github.com/freenet/wiki/wiki/FMS">
+			    <div>
+			      <h3>{% trans %}Forums{% endtrans %}</h3>
+			      <p>{% trans %}Ask questions and exchange ideas{% endtrans %}</p>
+			    </div>
+			  </a>
+			</li>
+			<li>
+			  <a href="https://github.com/freenet/wiki/wiki/FCPv2">
+			    <div>
+			      <h3>{% trans %}Platform{% endtrans %}</h3>
+			      <p>{% trans %}Build your own decentralized application on the Freenet platform{% endtrans %}</p>
+			    </div>
+			  </a>
+			</li>
+		</ul>
+	</section>
+
+	<section id="news">
+		<h2>{% trans %}What's New{% endtrans %}</h2>
+		<p>{% trans %}News about Freenet, internet freedom and privacy rights.{% endtrans %}</p>
+
+		<ol>
+                    {% for post in articles_page.object_list %}
+		    	{%- if loop.index <= 4 %}
+			<li>
+                        	<h3>{{ post.title | escape }}</h3>
+				<p class="time">{{ post.date | strftime('%Y-%m-%d') }}</p>
+				<p>{{ post.content | striptags | truncate }}</p>
+				<a href="{{ post.url }}">Details</a>
+			</li>{% endif %}
+                    {% endfor %}
+		</ol>
+		<p><a href="archives.html">News Archives</a></p>
+	</section>
+	<section id="testimonials">
+		<h2>{% trans %}Why we do this{% endtrans %}</h2>
+		<blockquote>
+			{% trans %}I worry about my child and the Internet all the time, even though she's too young to have logged on yet. Here's what I worry about. I worry that 10 or 15 years from now, she will come to me and say {% endtrans %}<q>{% trans %}Daddy, where were you when they took  freedom of the press away from the Internet{% endtrans %}</q>
+		</blockquote>
+		<cite><a href="https://twitter.com/sfmnemonic" class="author" rel="author">Mike Godwin</a> / <a href="https://eff.org" class="organization">Electronic Frontier Foundation</a></cite>
+	</section>
+	</div>
+
+	{% include "footer.html" %}
+	</body>
+</html>
